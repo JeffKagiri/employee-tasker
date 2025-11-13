@@ -1,0 +1,10 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Block React service worker files from indexing
+Disallow: /service-worker.js
+Disallow: /static/
+
+# Sitemap (optional — add if deploying to production)
+# Sitemap: https://your-domain.com/sitemap.xml

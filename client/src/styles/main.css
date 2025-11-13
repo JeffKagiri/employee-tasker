@@ -1,0 +1,171 @@
+/* =======================
+   Global Styles
+========================== */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f6f9;
+  color: #222;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* =======================
+   Navbar
+========================== */
+.navbar {
+  background: #24292e;
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar .logo {
+  width: 35px;
+  height: 35px;
+  background: #00bcd4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* =======================
+   Buttons
+========================== */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #00bcd4;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #0097a7;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid #00bcd4;
+  color: #00bcd4;
+}
+
+.btn.ghost:hover {
+  background: #00bcd4;
+  color: white;
+}
+
+/* =======================
+   Inputs and Forms
+========================== */
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+textarea.input {
+  resize: vertical;
+}
+
+/* =======================
+   Card and Layout
+========================== */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+
+/* =======================
+   Task Item
+========================== */
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.meta {
+  font-size: 13px;
+  color: #777;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.badge.pending {
+  background: #ffe0b2;
+  color: #e65100;
+}
+
+.badge.completed {
+  background: #c8e6c9;
+  color: #2e7d32;
+}
+
+.badge.in-progress {
+  background: #bbdefb;
+  color: #1565c0;
+}
+
+/* =======================
+   Responsive Layout
+========================== */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-actions {
+    margin-top: 10px;
+  }
+}

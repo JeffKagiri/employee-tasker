@@ -1,11 +1,38 @@
-// src/controllers/taskController.js
-const { validationResult } = require('express-validator');
 const Task = require('../models/Task');
 
-// get all tasks for logged in user
+// Create task
+exports.createTask = async (req, res) => {
+  try {
+    const { title, description, deadline, priority } = req.body;
+    const task = await Task.create({
+      user: req.user.id,
+      title,
+      description,
+      deadline,
+      priority
+    });
+    res.status(201).json(task);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Get all tasks (with filtering and sorting)
 exports.getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ userId: req.user.id }).sort({ deadline: 1, createdAt: -1 });
+    const { status, search, sortBy } = req.query;
+    const filter = { user: req.user.id };
+
+    if (status) filter.status = status;
+    if (search) filter.title = { $regex: search, $options: 'i' };
+
+    let query = Task.find(filter);
+
+    if (sortBy === 'deadline') query = query.sort({ deadline: 1 });
+    if (sortBy === 'priority') query = query.sort({ priority: 1 });
+
+    const tasks = await query;
     res.json(tasks);
   } catch (err) {
     console.error(err.message);
@@ -13,72 +40,34 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-// create a task for logged in user
-exports.createTask = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { title, description, deadline, priority } = req.body;
-
-  try {
-    const newTask = new Task({
-      userId: req.user.id,
-      title,
-      description,
-      deadline,
-      priority
-    });
-
-    const task = await newTask.save();
-    res.json(task);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-
-// update a task. only owner can update
+// Update task
 exports.updateTask = async (req, res) => {
-  const { title, description, deadline, priority, status } = req.body;
-
-  const taskFields = {};
-  if (title !== undefined) taskFields.title = title;
-  if (description !== undefined) taskFields.description = description;
-  if (deadline !== undefined) taskFields.deadline = deadline;
-  if (priority !== undefined) taskFields.priority = priority;
-  if (status !== undefined) taskFields.status = status;
-
   try {
-    let task = await Task.findById(req.params.id);
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
     if (!task) return res.status(404).json({ msg: 'Task not found' });
 
-    // check ownership
-    if (task.userId.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
-    }
+    const { title, description, deadline, priority, status } = req.body;
 
-    task = await Task.findByIdAndUpdate(req.params.id, { $set: taskFields }, { new: true });
-    res.json(task);
+    task.title = title || task.title;
+    task.description = description || task.description;
+    task.deadline = deadline || task.deadline;
+    task.priority = priority || task.priority;
+    task.status = status || task.status;
+
+    const updatedTask = await task.save();
+    res.json(updatedTask);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
 
-// delete a task. only owner can delete
+// Delete task
 exports.deleteTask = async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user.id });
     if (!task) return res.status(404).json({ msg: 'Task not found' });
-
-    if (task.userId.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
-    }
-
-    await Task.findByIdAndRemove(req.params.id);
-    res.json({ msg: 'Task removed' });
+    res.json({ msg: 'Task deleted successfully' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
