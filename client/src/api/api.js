@@ -1,7 +1,10 @@
 // Small axios wrapper that sets the base URL and injects the JWT token
 import axios from 'axios'
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000'
+// For production, use relative path; for development, use localhost
+const BASE_URL = process.env.NODE_ENV === 'production' 
+  ? ''  // Empty string for relative paths in production
+  : 'http://localhost:5000'
 
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
