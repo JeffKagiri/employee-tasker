@@ -19,12 +19,8 @@
       "dest": "server/server.js"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "client/build/static/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "client/build/$1"
     }
   ]
 }

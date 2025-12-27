@@ -1,4 +1,3 @@
-// Your original server.js with ONE LINE ADDED
 const express = require('express');
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
@@ -19,15 +18,39 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/tasks'));
 
-// Serve React app
-app.use(express.static(path.join(__dirname, '../client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+// TEST ROUTES - Add these
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    message: 'Express API is working!',
+    timestamp: new Date().toISOString() 
+  });
 });
 
-// start server (will only run locally, not on Vercel)
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK',
+    server: 'Express',
+    time: new Date().toISOString()
+  });
+});
 
-// ADD THIS ONE LINE for Vercel
-module.exports = app;  // <-- ONLY ADD THIS LINE
+// IMPORTANT: Remove React serving for Vercel
+// Comment out or remove these lines:
+// app.use(express.static(path.join(__dirname, '../client/build')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+// });
+
+// Keep this for local development only
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  });
+  
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+}
+
+// Export for Vercel
+module.exports = app;
