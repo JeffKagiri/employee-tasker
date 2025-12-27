@@ -1,3 +1,4 @@
+// Your original server.js with ONE LINE ADDED
 const express = require('express');
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
@@ -24,6 +25,9 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
-// start server
+// start server (will only run locally, not on Vercel)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+// ADD THIS ONE LINE for Vercel
+module.exports = app;  // <-- ONLY ADD THIS LINE
