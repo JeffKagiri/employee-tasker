@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'  // ← ADDED THIS IMPORT
 import api from '../api/api'
 import '../styles/main.css'
 
@@ -70,7 +71,7 @@ const SignUp = () => {
           </button>
         </form>
         <p style={{ marginTop: 10 }}>
-          Already have an account? <a href="/login">Login</a>
+          Already have an account? <Link to="/login">Login</Link>  
         </p>
       </div>
     </div>

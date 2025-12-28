@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import api from '../api/api'
+import { Link } from 'react-router-dom'
 import '../styles/main.css'
 
 /*
@@ -62,7 +63,7 @@ const SignIn = () => {
           </button>
         </form>
         <p style={{ marginTop: 10 }}>
-          Don’t have an account? <a href="/signup">Sign Up</a>
+          Don’t have an account? <Link to="/signup">Sign Up</Link>
         </p>
       </div>
     </div>

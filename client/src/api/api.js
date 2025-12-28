@@ -1,9 +1,9 @@
 // Small axios wrapper that sets the base URL and injects the JWT token
 import axios from 'axios'
 
-// For production, use relative path; for development, use localhost
+// For separate deployments: use full backend URL in production
 const BASE_URL = process.env.NODE_ENV === 'production' 
-  ? ''  // Empty string for relative paths in production
+  ? 'https://tasker-eight-sigma.vercel.app'  // Your actual backend URL
   : 'http://localhost:5000'
 
 const api = axios.create({
