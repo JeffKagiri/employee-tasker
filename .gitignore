@@ -1,7 +1,41 @@
+# Dependencies
 node_modules/
+
+# Environment variables (all of them)
 .env
 .env.local
+.env.development.local
+.env.test.local
+.env.production.local
+client/.env
+server/.env
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Build outputs
+client/build/
+dist/
+
+# Vercel
+.vercel/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Server specific
+server/node_modules/
+server/package-lock.json
+
+# Client specific
+client/node_modules/
+client/package-lock.json

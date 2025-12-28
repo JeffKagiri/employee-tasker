@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom'  // ← Changed to HashRouter
 import Dashboard from './pages/Dashboard'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
@@ -25,7 +25,7 @@ const RedirectHandler = () => {
 
 function App() {
   return (
-    <Router>
+    <Router>  {/* Now uses HashRouter */}
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<SignIn />} />

@@ -2,15 +2,13 @@
   "name": "employee-tasktrack",
   "version": "1.0.0",
   "description": "Employee TaskTrack - A MERN-based task management system where employees can create, update, and manage their tasks.",
-  "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "build": "cd client && npm install && npm run build",
-    "install-client": "cd client && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build",
-    "azure-build": "npm run install-client && npm run build",
-    "test": "echo \"No tests yet\" && exit 0"
+    "build": "cd client && npm run build",
+    "start": "cd client && npm start",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm start\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "install-all": "npm install && cd client && npm install && cd server && npm install"
   },
   "keywords": [
     "MERN",
@@ -23,21 +21,10 @@
   ],
   "author": "Jeff",
   "license": "ISC",
-  "type": "commonjs",
   "engines": {
     "node": ">=18.0.0"
   },
-  "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^4.18.2",
-    "express-validator": "^7.3.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^7.0.0",
-    "mongoose": "^8.19.3"
-  },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "concurrently": "^8.2.2"
   }
 }

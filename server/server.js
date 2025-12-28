@@ -2,23 +2,30 @@ const express = require('express');
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const path = require('path');
 
 dotenv.config();
 const app = express();
 
-// connect to DB
-connectDB();
+// Dynamic CORS - Read from environment variable
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',') 
+  : ['http://localhost:3000'];
 
-// middleware
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 app.use(express.json());
 
-// routes
+// Connect to DB
+connectDB();
+
+// Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/tasks'));
 
-// TEST ROUTES - Add these
+// Test routes
 app.get('/api/test', (req, res) => {
   res.json({ 
     message: 'Express API is working!',
@@ -34,22 +41,13 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// IMPORTANT: Remove React serving for Vercel
-// Comment out or remove these lines:
-// app.use(express.static(path.join(__dirname, '../client/build')));
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-// });
-
-// Keep this for local development only
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  app.use(express.static(path.join(__dirname, '../client/build')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'));
-  });
-  
+// For local development only - start server
+if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  app.listen(PORT, () => {
+    console.log(`Server running locally on port ${PORT}`);
+    console.log(`CORS allowed origins: ${allowedOrigins.join(', ')}`);
+  });
 }
 
 // Export for Vercel
